@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const TaskItem = ({ item, darkMode, toggleComplete, deleteTask }) => (
   <View style={darkMode ? styles.darkTask : styles.task}>
@@ -18,10 +19,11 @@ const TaskItem = ({ item, darkMode, toggleComplete, deleteTask }) => (
 );
 
 const HomeworkPlanner = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(initialAssignment);
   const [title, setTitle] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [Assignments, setAssignments] = useState(initialAssignment);
 
   const addTask = () => {
     if (!title.trim() || !dueDate.trim()) {
@@ -41,7 +43,15 @@ const HomeworkPlanner = () => {
       return;
     }
 
-    setTasks([...tasks, { id: Date.now().toString(), title, dueDate, completed: false }]);
+    const newAssignment = {
+      id: (Assignments.length + 1).toString(),
+      title: title.trim(),
+      dueDate: dueDate.trim(),
+      completed: false,
+    };
+
+    setTasks([...tasks, { ...newAssignment }]);
+    setAssignments([...Assignments, newAssignment]);
     setTitle("");
     setDueDate("");
   };
@@ -112,11 +122,33 @@ const HomeworkPlanner = () => {
   );
 } 
 
+const initialAssignment = [
+  {
+    id: "1",
+    title: "Math Homework",
+    dueDate: "2025-10-15",
+    completed: false,
+  },
+  {
+    id: "2",
+    title: "Science Project",
+    dueDate: "2025-10-20",
+    completed: false,
+  },
+  {
+    id: "3",
+    title: "History Essay",
+    dueDate: "2025-10-25",
+    completed: false,
+  },
+]
+
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     padding: 20, 
-    backgroundColor: "#D5F1DF",
+    paddingTop: 50,
+    backgroundColor: "#28EAE2",
     justifyContent: "center",
   },
   darkContainer: { 
@@ -125,24 +157,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#1A1A2E",
   },
   title: { 
-    fontSize: 24, 
+    fontSize: 30, 
     fontWeight: "bold", 
     marginBottom: 20, 
     color: "#FF6F61", 
     textAlign: "center",
   },
   darkTitle: { 
-    fontSize: 24, 
+    fontSize: 30, 
     fontWeight: "bold", 
     marginBottom: 20, 
-    color: "#F9ED69", 
+    color: "skyblue", 
     textAlign: "center",
   },
   input: {
     borderWidth: 1,
     padding: 10,
     marginBottom: 10,
-    borderColor: "#FFB6C1",
+    borderColor: "green",
     backgroundColor: "#FFF5EE",
     color: "#000",
     textAlign: "center",
@@ -152,7 +184,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     marginBottom: 10,
-    borderColor: "#6A0572",
+    borderColor: "green",
     backgroundColor: "#2E2E3A",
     color: "#fff",
     textAlign: "center",
@@ -163,7 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: "#FF6F61",
+    borderColor: "green",
     backgroundColor: "#FFF5EE",
     borderRadius: 10,
     marginBottom: 5,
@@ -173,14 +205,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: "#6A0572",
+    borderColor: "green",
     backgroundColor: "#2E2E3A",
     borderRadius: 10,
     marginBottom: 5,
   },
   taskText: { 
-    fontSize: 16, 
-    color: "#FF6F61" 
+    fontSize: 12, 
+    color: "skyblue" 
   },
   completedText: { 
     textDecorationLine: "line-through", 
@@ -189,7 +221,8 @@ const styles = StyleSheet.create({
   buttonText: { 
     color: "#0A50F9",
     fontWeight: "bold", 
-    marginLeft: 2,
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   darkButtonText: { 
     color: "#0A50F9",
